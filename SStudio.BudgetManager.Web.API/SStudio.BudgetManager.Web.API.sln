@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{32654CF2-5AD1-46E2-BDFB-AC64B6795B09}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C88055A2-AF70-4CC8-BB63-033A23A422B4}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SStudio.BudgetManager.Web.API", "src\SStudio.BudgetManager.Web.API\SStudio.BudgetManager.Web.API.xproj", "{0AB7093F-E851-4FB9-9DA8-BFE097AF61BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0AB7093F-E851-4FB9-9DA8-BFE097AF61BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AB7093F-E851-4FB9-9DA8-BFE097AF61BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AB7093F-E851-4FB9-9DA8-BFE097AF61BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AB7093F-E851-4FB9-9DA8-BFE097AF61BB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0AB7093F-E851-4FB9-9DA8-BFE097AF61BB} = {32654CF2-5AD1-46E2-BDFB-AC64B6795B09}
+	EndGlobalSection
+EndGlobal
