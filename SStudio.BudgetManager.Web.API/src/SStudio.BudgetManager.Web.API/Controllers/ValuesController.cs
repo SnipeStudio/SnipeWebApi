@@ -1,19 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
+
+using SStudio.BudgetManager.Web.API.Business;
+using SStudio.BudgetManager.Web.API.Models;
 
 namespace SStudio.BudgetManager.Web.API.Controllers
 {
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        private readonly IItemBusiness _itemBusiness;
+
+        public ValuesController(IItemBusiness itemBusiness)
+        {
+            _itemBusiness = itemBusiness;
+        }
+
         // GET: api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Item> Get()
         {
-            return new string[] { "value1", "value2" };
+            return _itemBusiness.List();
         }
 
         // GET api/values/5
@@ -25,8 +34,9 @@ namespace SStudio.BudgetManager.Web.API.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public int Post([FromBody]string value)
         {
+            return _itemBusiness.Create(new Item { Name = value });
         }
 
         // PUT api/values/5
@@ -37,8 +47,9 @@ namespace SStudio.BudgetManager.Web.API.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public bool Delete(int id)
         {
+            return _itemBusiness.Delete(id);
         }
     }
 }
