@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
+using SStudio.BudgetManager.Web.API.Repository;
+using SStudio.BudgetManager.Web.API.Business;
+using SStudio.BudgetManager.Web.API.Data;
 
 namespace SStudio.BudgetManager.Web.API
 {
@@ -28,6 +30,20 @@ namespace SStudio.BudgetManager.Web.API
         {
             // Add framework services.
             services.AddMvc();
+            services.AddSingleton<ISessionProvider, SessionProvider>();
+
+            #region Business
+
+            services.AddTransient<ICategoryBusiness, CategoryBusiness>();
+
+            #endregion Business
+
+
+            #region Repository
+
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            
+            #endregion Repository
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
