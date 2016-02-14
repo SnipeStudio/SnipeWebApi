@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 
 using SStudio.BudgetManager.Web.API.Repository;
 using SStudio.BudgetManager.Web.API.Business;
+using SStudio.BudgetManager.Web.API.Data;
 
 namespace SStudio.BudgetManager.Web.API
 {
@@ -29,8 +30,20 @@ namespace SStudio.BudgetManager.Web.API
         {
             // Add framework services.
             services.AddMvc();
-            services.AddSingleton<IItemContext, ItemContext>();
-            services.AddSingleton<IItemBusiness, ItemBusiness>();
+            services.AddSingleton<ISessionProvider, SessionProvider>();
+
+            #region Business
+
+            services.AddTransient<ICategoryBusiness, CategoryBusiness>();
+
+            #endregion Business
+
+
+            #region Repository
+
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            
+            #endregion Repository
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

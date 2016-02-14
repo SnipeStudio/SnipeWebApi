@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace SStudio.BudgetManager.Web.API.Models
 {
-    public class Item
+    public class CreateUpdateCategoryRequest
     {
-        public int Id { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
     }
 }
