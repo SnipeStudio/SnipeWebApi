@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using SStudio.BudgetManager.Web.API.Business;
 using SStudio.BudgetManager.Web.API.Models;
+using SStudio.BudgetManager.Web.API.Models.Requests;
 
 namespace SStudio.BudgetManager.Web.API.Controllers
 {

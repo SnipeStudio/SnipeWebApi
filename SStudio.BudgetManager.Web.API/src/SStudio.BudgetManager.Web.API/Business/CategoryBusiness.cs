@@ -1,4 +1,5 @@
 ﻿using SStudio.BudgetManager.Web.API.Models;
+using SStudio.BudgetManager.Web.API.Models.Requests;
 using SStudio.BudgetManager.Web.API.Repository;
 using System;
 using System.Collections.Generic;

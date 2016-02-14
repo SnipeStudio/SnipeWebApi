@@ -35,6 +35,7 @@ namespace SStudio.BudgetManager.Web.API
             #region Business
 
             services.AddTransient<ICategoryBusiness, CategoryBusiness>();
+            services.AddTransient<IUserBusiness, UserBusiness>();
 
             #endregion Business
 
@@ -42,7 +43,8 @@ namespace SStudio.BudgetManager.Web.API
             #region Repository
 
             services.AddTransient<ICategoryRepository, CategoryRepository>();
-            
+            services.AddTransient<IUserRepository, UserRepository>();
+
             #endregion Repository
         }
 

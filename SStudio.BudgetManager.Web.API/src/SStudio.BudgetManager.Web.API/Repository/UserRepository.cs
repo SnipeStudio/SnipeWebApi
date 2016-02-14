@@ -5,56 +5,56 @@ using System.Linq;
 using SStudio.BudgetManager.Web.API.Data;
 using SStudio.BudgetManager.Web.API.Data.Mapping;
 using SStudio.BudgetManager.Web.API.Models;
-using DataCategory = SStudio.BudgetManager.Web.API.Data.Models.Category;
+using DataUser = SStudio.BudgetManager.Web.API.Data.Models.User;
 
 namespace SStudio.BudgetManager.Web.API.Repository
 {
-    public class CategoryRepository : ICategoryRepository
+    public class UserRepository : IUserRepository
     {
         private readonly ISessionProvider _sessionProvider;
 
-        public CategoryRepository(ISessionProvider sessionProvider)
+        public UserRepository(ISessionProvider sessionProvider)
         {
             _sessionProvider = sessionProvider;
         }
 
-        public Category Get(int id)
+        public User Get(int id)
         {
-            using (var session = _sessionProvider.GetSession<CategoryMap>().OpenSession())
+            using (var session = _sessionProvider.GetSession<UserMap>().OpenSession())
             {
                 using (session.BeginTransaction())
                 {
-                    var dataCategory = (DataCategory)session.Get(typeof(DataCategory), id);
+                    var DataUser = (DataUser)session.Get(typeof(DataUser), id);
 
-                    return DataCategoryToCategory(dataCategory);
+                    return DataUserToUser(DataUser);
                 }
             }
         }
 
-        public IEnumerable<Category> List()
+        public IEnumerable<User> List()
         {
-            using (var session = _sessionProvider.GetSession<CategoryMap>().OpenSession())
+            using (var session = _sessionProvider.GetSession<UserMap>().OpenSession())
             {
                 using (session.BeginTransaction())
                 {
-                    var items = session.QueryOver<DataCategory>()
+                    var items = session.QueryOver<DataUser>()
                                        .List()
-                                       .Select(DataCategoryToCategory);
+                                       .Select(DataUserToUser);
                     return items;
                 }
             }
         }
 
-        public int Create(Category category)
+        public int Create(User category)
         {
-            using (var session = _sessionProvider.GetSession<CategoryMap>().OpenSession())
+            using (var session = _sessionProvider.GetSession<UserMap>().OpenSession())
             {
                 using (var trans = session.BeginTransaction())
                 {
-                    var dataItem = new DataCategory
+                    var dataItem = new DataUser
                     {
-                        Name = category.Name,
-                        Description = category.Description,
+                        FirstName = category.FirstName,
+                        LastName = category.LastName,
                         LastUpdated = DateTime.UtcNow
                     };
 
@@ -66,16 +66,16 @@ namespace SStudio.BudgetManager.Web.API.Repository
             }
         }
 
-        public bool Update(Category category)
+        public bool Update(User category)
         {
             var updated = true;
-            using (var session = _sessionProvider.GetSession<CategoryMap>().OpenSession())
+            using (var session = _sessionProvider.GetSession<UserMap>().OpenSession())
             {
                 using (var trans = session.BeginTransaction())
                 {
-                    var dataItem = (DataCategory)session.Get(typeof(DataCategory), category.Id);
-                    dataItem.Name = string.IsNullOrWhiteSpace(category.Name) ? dataItem.Name : category.Name;
-                    dataItem.Description = string.IsNullOrWhiteSpace(category.Description) ? dataItem.Description : category.Description;
+                    var dataItem = (DataUser)session.Get(typeof(DataUser), category.Id);
+                    dataItem.FirstName = string.IsNullOrWhiteSpace(category.FirstName) ? dataItem.FirstName : category.FirstName;
+                    dataItem.LastName = string.IsNullOrWhiteSpace(category.LastName) ? dataItem.LastName : category.LastName;
                     dataItem.LastUpdated = DateTime.UtcNow;
 
                     try
@@ -83,7 +83,7 @@ namespace SStudio.BudgetManager.Web.API.Repository
                         session.Update(dataItem);
                         trans.Commit();
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         updated = false;
                     }
@@ -96,17 +96,17 @@ namespace SStudio.BudgetManager.Web.API.Repository
         public bool Delete(int id)
         {
             var deleted = true;
-            using (var session = _sessionProvider.GetSession<CategoryMap>().OpenSession())
+            using (var session = _sessionProvider.GetSession<UserMap>().OpenSession())
             {
                 using (var trans = session.BeginTransaction())
                 {
                     try
                     {
-                        var item = session.Get(typeof(DataCategory), id);
+                        var item = session.Get(typeof(DataUser), id);
                         session.Delete(item);
                         trans.Commit();
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         deleted = false;
                     }
@@ -116,23 +116,25 @@ namespace SStudio.BudgetManager.Web.API.Repository
             return deleted;
         }
 
-        private Category DataCategoryToCategory(DataCategory category)
+        private User DataUserToUser(DataUser user)
         {
-            return new Category
+            return new User
             {
-                Id = category.Id,
-                Name = category.Name,
-                Description = category.Description
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Phone = user.Phone
             };
         }
     }
 
-    public interface ICategoryRepository
+    public interface IUserRepository
     {
-        IEnumerable<Category> List();
-        Category Get(int id);
-        int Create(Category category);
-        bool Update(Category category);
+        IEnumerable<User> List();
+        User Get(int id);
+        int Create(User user);
+        bool Update(User user);
         bool Delete(int id);
     }
 }
