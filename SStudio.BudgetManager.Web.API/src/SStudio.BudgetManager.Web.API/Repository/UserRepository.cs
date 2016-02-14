@@ -45,7 +45,7 @@ namespace SStudio.BudgetManager.Web.API.Repository
             }
         }
 
-        public int Create(User category)
+        public int Create(User user)
         {
             using (var session = _sessionProvider.GetSession<UserMap>().OpenSession())
             {
@@ -53,8 +53,10 @@ namespace SStudio.BudgetManager.Web.API.Repository
                 {
                     var dataItem = new DataUser
                     {
-                        FirstName = category.FirstName,
-                        LastName = category.LastName,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email,
+                        Phone = user.Phone,
                         LastUpdated = DateTime.UtcNow
                     };
 
@@ -66,16 +68,18 @@ namespace SStudio.BudgetManager.Web.API.Repository
             }
         }
 
-        public bool Update(User category)
+        public bool Update(User user)
         {
             var updated = true;
             using (var session = _sessionProvider.GetSession<UserMap>().OpenSession())
             {
                 using (var trans = session.BeginTransaction())
                 {
-                    var dataItem = (DataUser)session.Get(typeof(DataUser), category.Id);
-                    dataItem.FirstName = string.IsNullOrWhiteSpace(category.FirstName) ? dataItem.FirstName : category.FirstName;
-                    dataItem.LastName = string.IsNullOrWhiteSpace(category.LastName) ? dataItem.LastName : category.LastName;
+                    var dataItem = (DataUser)session.Get(typeof(DataUser), user.Id);
+                    dataItem.FirstName = string.IsNullOrWhiteSpace(user.FirstName) ? dataItem.FirstName : user.FirstName;
+                    dataItem.LastName = string.IsNullOrWhiteSpace(user.LastName) ? dataItem.LastName : user.LastName;
+                    dataItem.Email = string.IsNullOrWhiteSpace(user.Email) ? dataItem.Email : user.Email;
+                    dataItem.Phone = string.IsNullOrWhiteSpace(user.Phone) ? dataItem.Phone : user.Phone;
                     dataItem.LastUpdated = DateTime.UtcNow;
 
                     try
