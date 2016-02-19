@@ -27,7 +27,7 @@ namespace SStudio.BudgetManager.Web.API.Data
         public ISessionFactory GetSession<T>()
         {
             return GetDatabase()
-                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<T>())
+                    .Mappings(m => m.FluentMappings.Add<T>())
                     .ExposeConfiguration(TreatConfiguration)
                     .BuildSessionFactory();
         }
