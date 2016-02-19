@@ -15,41 +15,44 @@ namespace SStudio.BudgetManager.Web.API.Controllers
     public class UserController : Controller
     {
         private readonly IUserBusiness _userBusiness;
+        private readonly IPaymentBusiness _paymentBusiness;
 
-        public UserController(IUserBusiness userBusiness)
+        public UserController(IUserBusiness userBusiness, IPaymentBusiness paymentBusiness)
         {
             _userBusiness = userBusiness;
+            _paymentBusiness = paymentBusiness;
         }
 
-        // GET: api/User
         [HttpGet]
-        public async Task<IEnumerable<User>> List()
+        public IEnumerable<User> List()
         {
             return _userBusiness.List();
         }
 
-        // GET api/User/5
         [HttpGet("{id}")]
         public User Get(int id)
         {
             return _userBusiness.Get(id);
         }
 
-        // POST api/User
+        [HttpGet("{id}/Payment")]
+        public IEnumerable<Payment> ListUserPayments(int id)
+        {
+            return _paymentBusiness.ListByUserId(id);
+        }
+
         [HttpPost]
         public int Create([FromBody]CreateUpdateUserRequest request)
         {
             return _userBusiness.Create(request);
         }
 
-        // PUT api/User/5
         [HttpPut("{id}")]
         public bool Update(int id, [FromBody]CreateUpdateUserRequest request)
         {
             return _userBusiness.Update(id, request);
         }
 
-        // DELETE api/User/5
         [HttpDelete("{id}")]
         public bool Delete(int id)
         {

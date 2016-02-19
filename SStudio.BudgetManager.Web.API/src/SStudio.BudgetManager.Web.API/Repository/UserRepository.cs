@@ -24,9 +24,9 @@ namespace SStudio.BudgetManager.Web.API.Repository
             {
                 using (session.BeginTransaction())
                 {
-                    var DataUser = (DataUser)session.Get(typeof(DataUser), id);
+                    var dataUser = session.Get<DataUser>(id);
 
-                    return DataUserToUser(DataUser);
+                    return DataUserToUser(dataUser);
                 }
             }
         }
@@ -75,7 +75,7 @@ namespace SStudio.BudgetManager.Web.API.Repository
             {
                 using (var trans = session.BeginTransaction())
                 {
-                    var dataItem = (DataUser)session.Get(typeof(DataUser), user.Id);
+                    var dataItem = session.Get<DataUser>(user.Id);
                     dataItem.FirstName = string.IsNullOrWhiteSpace(user.FirstName) ? dataItem.FirstName : user.FirstName;
                     dataItem.LastName = string.IsNullOrWhiteSpace(user.LastName) ? dataItem.LastName : user.LastName;
                     dataItem.Email = string.IsNullOrWhiteSpace(user.Email) ? dataItem.Email : user.Email;
@@ -106,7 +106,7 @@ namespace SStudio.BudgetManager.Web.API.Repository
                 {
                     try
                     {
-                        var item = session.Get(typeof(DataUser), id);
+                        var item = session.Get<DataUser>(id);
                         session.Delete(item);
                         trans.Commit();
                     }
