@@ -10,36 +10,36 @@ namespace SStudio.BudgetManager.Web.API.Business
 {
     public class UserBusiness : IUserBusiness
     {
-        private readonly IUserRepository _UserRepository;
+        private readonly IUserRepository _userRepository;
 
         public UserBusiness(IUserRepository UserRepository)
         {
-            _UserRepository = UserRepository;
+            _userRepository = UserRepository;
         }
 
         public IEnumerable<User> List()
         {
-            return _UserRepository.List();
+            return _userRepository.List();
         }
 
         public User Get(int id)
         {
-            return _UserRepository.Get(id);
+            return _userRepository.Get(id);
         }
 
         public int Create(CreateUpdateUserRequest request)
         {
-            return _UserRepository.Create(new User { FirstName = request.FirstName, LastName = request.LastName, Email = request.Email, Phone = request.Phone });
+            return _userRepository.Create(new User { FirstName = request.FirstName, LastName = request.LastName, Email = request.Email, Phone = request.Phone });
         }
 
         public bool Delete(int id)
         {
-            return _UserRepository.Delete(id);
+            return _userRepository.Delete(id);
         }
 
         public bool Update(int id, CreateUpdateUserRequest request)
         {
-            return _UserRepository.Update(new User { Id = id, FirstName = request.FirstName, LastName = request.LastName });
+            return _userRepository.Update(new User { Id = id, FirstName = request.FirstName, LastName = request.LastName });
         }
     }
 
