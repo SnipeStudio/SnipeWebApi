@@ -23,27 +23,49 @@ namespace SStudio.BudgetManager.Web.API.Data
         private readonly string databaseName = "Budget";
         private readonly string login = "postgres";
         private readonly string password = "sstudio_dba1";
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T">Mapping Type from Data.Mapping</typeparam>
-        /// <returns>Returns SessionFactory to start a transaction</returns>
+        
         public ISessionFactory GetSession<T>()
         {
-            return Fluently
-                .Configure()
-                    .Database(
-                        PostgreSQLConfiguration.Standard
-                        .ConnectionString(c =>
-                            c.Host(host)
-                            .Port(port)
-                            .Database(databaseName)
-                            .Username(login)
-                            .Password(password)))
+            return GetDatabase()
                     .Mappings(m => m.FluentMappings.AddFromAssemblyOf<T>())
                     .ExposeConfiguration(TreatConfiguration)
-                .BuildSessionFactory();
+                    .BuildSessionFactory();
+        }
+
+        public ISessionFactory GetSession(Type type)
+        {
+            return GetDatabase()
+                    .Mappings(m => m.FluentMappings.Add(type))
+                    .ExposeConfiguration(TreatConfiguration)
+                    .BuildSessionFactory();
+        }
+
+        public ISessionFactory GetSession(Type[] types)
+        {
+            var database = GetDatabase();
+
+            foreach (var type in types)
+            {
+                database.Mappings(m => m.FluentMappings.Add(type));
+            }
+
+            return database.ExposeConfiguration(TreatConfiguration).BuildSessionFactory();
+        }
+
+        private FluentConfiguration GetDatabase()
+        {
+            return Fluently
+                        .Configure()
+                        .Database(
+                            PostgreSQLConfiguration.Standard
+                            .ConnectionString(c =>
+                                c.Host(host)
+                                .Port(port)
+                                .Database(databaseName)
+                                .Username(login)
+                                .Password(password)
+                            )
+                        );
         }
 
         private void TreatConfiguration(Configuration configuration)

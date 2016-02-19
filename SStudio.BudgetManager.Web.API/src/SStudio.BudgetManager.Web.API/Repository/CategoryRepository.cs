@@ -24,7 +24,7 @@ namespace SStudio.BudgetManager.Web.API.Repository
             {
                 using (session.BeginTransaction())
                 {
-                    var dataCategory = (DataCategory)session.Get(typeof(DataCategory), id);
+                    var dataCategory = session.Get<DataCategory>(id);
 
                     return DataCategoryToCategory(dataCategory);
                 }
@@ -37,8 +37,8 @@ namespace SStudio.BudgetManager.Web.API.Repository
             {
                 using (session.BeginTransaction())
                 {
-                    var items = session.CreateCriteria(typeof(DataCategory))
-                                       .List<DataCategory>()
+                    var items = session.QueryOver<DataCategory>()
+                                       .List()
                                        .Select(DataCategoryToCategory);
                     return items;
                 }
@@ -73,7 +73,7 @@ namespace SStudio.BudgetManager.Web.API.Repository
             {
                 using (var trans = session.BeginTransaction())
                 {
-                    var dataItem = (DataCategory)session.Get(typeof(DataCategory), category.Id.Value);
+                    var dataItem = session.Get<DataCategory>(category.Id);
                     dataItem.Name = string.IsNullOrWhiteSpace(category.Name) ? dataItem.Name : category.Name;
                     dataItem.Description = string.IsNullOrWhiteSpace(category.Description) ? dataItem.Description : category.Description;
                     dataItem.LastUpdated = DateTime.UtcNow;
@@ -102,7 +102,7 @@ namespace SStudio.BudgetManager.Web.API.Repository
                 {
                     try
                     {
-                        var item = session.Get(typeof(DataCategory), id);
+                        var item = session.Get<DataCategory>(id);
                         session.Delete(item);
                         trans.Commit();
                     }
