@@ -29,7 +29,7 @@ namespace SStudio.BudgetManager.Web.API.Business
 
         public int Create(CreateUpdateUserRequest request)
         {
-            return _userRepository.Create(new User { FirstName = request.FirstName, LastName = request.LastName, Email = request.Email, Phone = request.Phone });
+            return _userRepository.Create(new User { FirstName = request.FirstName, LastName = request.LastName, Email = request.Email });
         }
 
         public bool Delete(int id)
