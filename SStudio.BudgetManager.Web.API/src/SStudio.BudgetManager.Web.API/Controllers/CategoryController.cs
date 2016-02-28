@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+﻿using Microsoft.AspNet.Mvc;
 using SStudio.BudgetManager.Web.API.Business;
-using SStudio.BudgetManager.Web.API.Models;
 using SStudio.BudgetManager.Web.API.Models.Requests;
+using SStudio.BudgetManager.Web.API.Extensions;
 
 namespace SStudio.BudgetManager.Web.API.Controllers
 {
@@ -21,39 +18,51 @@ namespace SStudio.BudgetManager.Web.API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Category> List()
+        public IActionResult List()
         {
-            return _categoryBusiness.List();
+            var result = _categoryBusiness.List();
+            return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public Category Get(int id)
+        [HttpGet("{id:int}")]
+        public IActionResult Get(int id)
         {
-            return _categoryBusiness.Get(id);
+            var result = _categoryBusiness.Get(id);
+            return Ok(result);
         }
 
-        [HttpGet("{id}/Payment")]
-        public IEnumerable<Payment> ListCategoryPayments(int id)
+        [HttpGet("{id:int}/Payment")]
+        public IActionResult ListCategoryPayments(int id)
         {
-            return _paymentBusiness.ListByCategoryId(id);
+            var result = _paymentBusiness.ListByCategoryId(id);
+            return Ok(result);
         }
 
         [HttpPost]
-        public int Create([FromBody]CreateUpdateCategoryRequest request)
+        public IActionResult Create([FromBody]CreateUpdateCategoryRequest request)
         {
-            return _categoryBusiness.Create(request);
+            if (request == null || this.HasRequestErrors())
+                return HttpBadRequest(ModelState);
+
+            var result = _categoryBusiness.Create(request);
+            return Ok(result);
         }
 
-        [HttpPut("{id}")]
-        public bool Update(int id, [FromBody]CreateUpdateCategoryRequest request)
+        [HttpPut("{id:int}")]
+        public IActionResult Update(int id, [FromBody]CreateUpdateCategoryRequest request)
         {
-            return _categoryBusiness.Update(id, request);
+            if (request == null || this.HasRequestErrors())
+                return HttpBadRequest(ModelState);
+
+            var result = _categoryBusiness.Update(id, request);
+            return Ok(result);
         }
 
-        [HttpDelete("{id}")]
-        public bool Delete(int id)
+        [HttpDelete("{id:int}")]
+        public IActionResult Delete(int id)
         {
-            return _categoryBusiness.Delete(id);
+            var result = _categoryBusiness.Delete(id);
+            return Ok(result);
         }
     }
 }

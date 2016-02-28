@@ -28,7 +28,6 @@ namespace SStudio.BudgetManager.Web.API.Data
         {
             return GetDatabase()
                     .Mappings(m => m.FluentMappings.Add<T>())
-                    .ExposeConfiguration(TreatConfiguration)
                     .BuildSessionFactory();
         }
 
@@ -36,7 +35,6 @@ namespace SStudio.BudgetManager.Web.API.Data
         {
             return GetDatabase()
                     .Mappings(m => m.FluentMappings.Add(type))
-                    .ExposeConfiguration(TreatConfiguration)
                     .BuildSessionFactory();
         }
 
@@ -49,7 +47,7 @@ namespace SStudio.BudgetManager.Web.API.Data
                 database.Mappings(m => m.FluentMappings.Add(type));
             }
 
-            return database.ExposeConfiguration(TreatConfiguration).BuildSessionFactory();
+            return database.BuildSessionFactory();
         }
 
         private FluentConfiguration GetDatabase()
@@ -67,22 +65,5 @@ namespace SStudio.BudgetManager.Web.API.Data
                             )
                         );
         }
-
-        private void TreatConfiguration(Configuration configuration)
-        {
-            // dump sql file for debug
-            Action<string> updateExport = x =>
-            {
-                using (var file = new FileStream(@"update.sql", FileMode.OpenOrCreate, FileAccess.ReadWrite))
-                using (var sw = new StreamWriter(file))
-                {
-                    sw.Write(x);
-                    sw.Close();
-                }
-            };
-            var update = new SchemaUpdate(configuration);
-            update.Execute(updateExport, true);
-        }
-
     }
 }
