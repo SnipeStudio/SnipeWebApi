@@ -1,7 +1,10 @@
-﻿namespace SStudio.BudgetManager.Web.API.Models.Requests
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SStudio.BudgetManager.Web.API.Models.Requests
 {
     public class CreateUpdatePaymentRequest
     {
-        public decimal Summary { get; set; }
+        [Required]
+        public decimal? Summary { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace SStudio.BudgetManager.Web.API.Business
             {
                 UserId = userId,
                 CategoryId = categoryId,
-                Summary = request.Summary
+                Summary = request.Summary.Value
             });
 
             return paymentId;
@@ -59,7 +59,7 @@ namespace SStudio.BudgetManager.Web.API.Business
             return _paymentRepository.Update(new Payment
             {
                 Id = paymentId,
-                Summary = request.Summary
+                Summary = request.Summary.Value
             });
         }
     }

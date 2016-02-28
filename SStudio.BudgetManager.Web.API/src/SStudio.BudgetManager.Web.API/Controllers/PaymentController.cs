@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+﻿using Microsoft.AspNet.Mvc;
 using SStudio.BudgetManager.Web.API.Business;
-using SStudio.BudgetManager.Web.API.Models;
 using SStudio.BudgetManager.Web.API.Models.Requests;
+using SStudio.BudgetManager.Web.API.Extensions;
 
 namespace SStudio.BudgetManager.Web.API.Controllers
 {
@@ -21,34 +17,45 @@ namespace SStudio.BudgetManager.Web.API.Controllers
 
         [HttpGet]
         [Route("Payment")]
-        public IEnumerable<Payment> List()
+        public IActionResult List()
         {
-            return _paymentBusiness.List();
+            var result = _paymentBusiness.List();
+            return Ok(result);
         }
         
-        [HttpGet("Payment/{id}")]
-        public Payment Get(int id)
+        [HttpGet("Payment/{id:int}")]
+        public IActionResult Get(int id)
         {
-            return _paymentBusiness.Get(id);
+            var result = _paymentBusiness.Get(id);
+            return Ok(result);
         }
 
         [HttpPost]
-        [Route("User/{userId}/Category/{categoryId}/Payment")]
-        public int Post(int userId, int categoryId, [FromBody]CreateUpdatePaymentRequest request)
+        [Route("User/{userId:int}/Category/{categoryId:int}/Payment")]
+        public IActionResult Post(int userId, int categoryId, [FromBody]CreateUpdatePaymentRequest request)
         {
-            return _paymentBusiness.Create(userId, categoryId, request);
+            if (request == null || this.HasRequestErrors())
+                return HttpBadRequest(ModelState);
+
+            var result = _paymentBusiness.Create(userId, categoryId, request);
+            return Ok(result);
         }
 
-        [HttpPut("Payment/{id}")]
-        public bool Put(int id, [FromBody]CreateUpdatePaymentRequest request)
+        [HttpPut("Payment/{id:int}")]
+        public IActionResult Put(int id, [FromBody]CreateUpdatePaymentRequest request)
         {
-            return _paymentBusiness.Update(id, request);
+            if (request == null || this.HasRequestErrors())
+                return HttpBadRequest(ModelState);
+
+            var result = _paymentBusiness.Update(id, request);
+            return Ok(result);
         }
 
-        [HttpDelete("Payment/{id}")]
-        public bool Delete(int id)
+        [HttpDelete("Payment/{id:int}")]
+        public IActionResult Delete(int id)
         {
-            return _paymentBusiness.Delete(id);
+            var result = _paymentBusiness.Delete(id);
+            return Ok(result);
         }
     }
 }
