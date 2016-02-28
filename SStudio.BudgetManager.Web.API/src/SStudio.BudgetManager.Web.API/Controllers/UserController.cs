@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Microsoft.AspNet.Mvc;
+﻿using Microsoft.AspNet.Mvc;
 
 using SStudio.BudgetManager.Web.API.Business;
-using SStudio.BudgetManager.Web.API.Models;
 using SStudio.BudgetManager.Web.API.Models.Requests;
+using SStudio.BudgetManager.Web.API.Extensions;
 
 namespace SStudio.BudgetManager.Web.API.Controllers
 {
@@ -24,39 +19,51 @@ namespace SStudio.BudgetManager.Web.API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<User> List()
+        public IActionResult List()
         {
-            return _userBusiness.List();
+            var result = _userBusiness.List();
+            return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public User Get(int id)
+        [HttpGet("{id:int}")]
+        public IActionResult Get(int id)
         {
-            return _userBusiness.Get(id);
+            var result = _userBusiness.Get(id);
+            return Ok(result);
         }
 
-        [HttpGet("{id}/Payment")]
-        public IEnumerable<Payment> ListUserPayments(int id)
+        [HttpGet("{id:int}/Payment")]
+        public IActionResult ListUserPayments(int id)
         {
-            return _paymentBusiness.ListByUserId(id);
+            var result = _paymentBusiness.ListByUserId(id);
+            return Ok(result);
         }
 
         [HttpPost]
-        public int Create([FromBody]CreateUpdateUserRequest request)
+        public IActionResult Create([FromBody]CreateUpdateUserRequest request)
         {
-            return _userBusiness.Create(request);
+            if (request == null || this.HasRequestErrors())
+                return HttpBadRequest(ModelState);
+
+            var result = _userBusiness.Create(request);
+            return Ok(result);
         }
 
-        [HttpPut("{id}")]
-        public bool Update(int id, [FromBody]CreateUpdateUserRequest request)
+        [HttpPut("{id:int}")]
+        public IActionResult Update(int id, [FromBody]CreateUpdateUserRequest request)
         {
-            return _userBusiness.Update(id, request);
+            if (request == null || this.HasRequestErrors())
+                return HttpBadRequest(ModelState);
+
+            var result = _userBusiness.Update(id, request);
+            return Ok(result);
         }
 
-        [HttpDelete("{id}")]
-        public bool Delete(int id)
+        [HttpDelete("{id:int}")]
+        public IActionResult Delete(int id)
         {
-            return _userBusiness.Delete(id);
+            var result = _userBusiness.Delete(id);
+            return Ok(result);
         }
     }
 }
